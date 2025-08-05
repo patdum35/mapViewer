@@ -8,6 +8,19 @@ import { Map3D } from './map3D.js';
 import { VideoGenerator } from './videoGen.js';
 
 
+
+
+// for tracking with google Analytics
+export function trackPageView(pagePath) {
+    if (window.gtag) {
+        console.log(`📊 Suivi de la vue de page pour google Analytics: ${pagePath}`);
+        gtag('event', 'page_view', {
+            page_location: window.location.href,
+            page_title: pagePath
+        });
+    }
+}
+
 class SportViewer {
     constructor() {
         this.gpxParser = new GPXParser();
@@ -24,6 +37,8 @@ class SportViewer {
      */
     init() {
         console.log('Sport Viewer 3D - Initialisation');
+
+        trackPageView('accueilSportViewer'); // Suivre la vue de la page d'accueil
         
         // Initialiser les gestionnaires d'événements
         this.setupEventHandlers();
@@ -294,6 +309,7 @@ class SportViewer {
      */
     show2DView() {
         console.log('Affichage de la vue 2D');
+        trackPageView('Affichage de la vue 2D'); // Suivre la vue 
         
         // Masquer toutes les vues
         this.hideAllViews();
@@ -320,7 +336,8 @@ class SportViewer {
      */
     show3DView() {
         console.log('Affichage de la vue 3D');
-        
+        trackPageView('Affichage de la vue 3D'); // Suivre la vue 
+
         // Masquer toutes les vues
         this.hideAllViews();
         
@@ -403,29 +420,12 @@ class SportViewer {
      * Génère une vidéo de l'activité
      */
     generateVideo() {
-        // Pour l'instant, afficher un message
-        // alert('La génération de vidéo sera implémentée dans une prochaine version.\n\nCette fonctionnalité permettra de créer une vidéo animée de votre parcours en 3D.');
-        
-        // TODO: Implémenter avec videoGen.js
-        // - Utiliser MediaRecorder API ou CCapture.js
-        // - Animer la caméra le long du parcours
-        // - Ajouter des overlays (vitesse, distance, temps)
-        // - Exporter en MP4/WebM
-
-
-        // const videoGen = new VideoGenerator(map, (progress) => {
-        //     // Ici tu fais avancer ton animation (trace rouge, caméra, etc.)
-        //     avancerAnimation(progress); 
-        // });
-
-
-
+        trackPageView('generateVideo'); // Suivre la vue 
         const videoGen = new VideoGenerator(window.mapboxInstance.map, (progress) => {
             window.mapboxInstance .updateAnimationProgress(progress); 
         });
 
         videoGen.startRecording(10, 30);
-
     }
 
     /**
